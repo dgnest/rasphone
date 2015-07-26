@@ -1,0 +1,6 @@
+WTForms==2.0.2
+backports.ssl-match-hostname==3.4.0.2
+certifi==2015.04.28
+ipdb==0.8.1
+ipython==3.2.1
+tornado==4.2.1
