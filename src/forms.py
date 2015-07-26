@@ -2,6 +2,8 @@ from wtforms import Form
 from wtforms import fields
 from wtforms import validators
 
+from utils import NumericValidator
+
 
 class MessageForm(Form):
     message_id = fields.IntegerField(
@@ -9,6 +11,7 @@ class MessageForm(Form):
         validators=[
             validators.required(),
             validators.NumberRange(min=0),
+            NumericValidator.numeric(),
         ],
     )
     order = fields.IntegerField(
@@ -16,6 +19,7 @@ class MessageForm(Form):
         validators=[
             validators.required(),
             validators.NumberRange(min=1, max=6),
+            NumericValidator.numeric(),
         ],
     )
     type_message = fields.SelectField(
@@ -39,5 +43,41 @@ class MessageForm(Form):
         "Cellphone",
         validators=[
             validators.required(),
+            NumericValidator.fixed_digits(digits=9),
+        ],
+    )
+
+
+class CallForm(Form):
+    message_id = fields.IntegerField(
+        "Message ID",
+        validators=[
+            validators.required(),
+            validators.NumberRange(min=0),
+            NumericValidator.numeric(),
+        ],
+    )
+    cellphone = fields.IntegerField(
+        "Cellphone",
+        validators=[
+            validators.required(),
+            NumericValidator.fixed_digits(digits=9),
+        ],
+    )
+
+
+class SMSForm(Form):
+    message = fields.StringField(
+        "Text Message",
+        validators=[
+            validators.required(),
+            validators.Length(max=500),
+        ],
+    )
+    cellphone = fields.IntegerField(
+        "Cellphone",
+        validators=[
+            validators.required(),
+            NumericValidator.fixed_digits(digits=9),
         ],
     )

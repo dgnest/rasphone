@@ -1,10 +1,11 @@
 import tornado.escape
 import tornado.web
 
-from forms import MessageForm
+from forms import MessageForm, CallForm, SMSForm
 
 
 class BaseHandler(tornado.web.RequestHandler):
+    form_class = MessageForm
 
     def perform_service(self, payload, *args, **kwargs):
         """
@@ -20,22 +21,20 @@ class BaseHandler(tornado.web.RequestHandler):
             for key, value in self.request.arguments.iteritems():
                 payload[str(key)] = value[0]
 
-        form = MessageForm(**payload)
+        form = self.form_class(**payload)
         if form.validate():
-            response = {
-                "message_id": form.message_id.data,
-                "order": form.order.data,
-                "type_message": form.type_message.data,
-                "message": form.message.data,
-                "cellphone": form.cellphone.data,
-                "status": "in queue",
-            }
+            response = form.data
+            response["status"] = "in queue"
+            print payload
             self.perform_service(payload=response)
             self.write(tornado.escape.json_encode(response))
-        self.write(tornado.escape.json_encode(form.errors))
+        else:
+            self.set_status(400, reason="Bad request")
+            self.write(tornado.escape.json_encode(form.errors))
 
 
 class CallHandler(BaseHandler):
+    form_class = CallForm
 
     def perform_service(self, payload, *args, **kwargs):
         """
@@ -45,6 +44,7 @@ class CallHandler(BaseHandler):
 
 
 class SMSHandler(BaseHandler):
+    form_class = SMSForm
 
     def perform_service(self, payload, *args, **kwargs):
         """
