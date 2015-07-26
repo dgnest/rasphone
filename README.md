@@ -31,7 +31,7 @@ with the following information:
 
 ```json
 {
-    "message": "2342",
-    "cellphone": 984287312
+    "message": "This is my first sms!",
+    "cellphone": 1234567896
 }
 ```
