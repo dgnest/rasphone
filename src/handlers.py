@@ -1,5 +1,11 @@
+# -*- coding: utf-8 -*-
+
+import os
+
 import tornado.escape
 import tornado.web
+
+from conf import settings
 
 from forms import MessageForm, CallForm, SMSForm
 
@@ -24,9 +30,8 @@ class BaseHandler(tornado.web.RequestHandler):
         form = self.form_class(**payload)
         if form.validate():
             response = form.data
-            response["status"] = "in queue"
-            print payload
-            self.perform_service(payload=response)
+            status = self.perform_service(payload=response)
+            response["status"] = status
             self.write(response)
         else:
             self.set_status(400, reason="Bad request")
@@ -40,7 +45,7 @@ class CallHandler(BaseHandler):
         """
             Do stuff here.
         """
-        print "Make a Call"
+        return "Make a Call"
 
 
 class SMSHandler(BaseHandler):
@@ -48,6 +53,13 @@ class SMSHandler(BaseHandler):
 
     def perform_service(self, payload, *args, **kwargs):
         """
-            Do stuff here.
+            Run command in order to send SMS to Asterisk's queue.
         """
-        print "Send SMS"
+        command = "asterisk -x 'dongle sms dongle0 %(cellphone)s %(message)s'"
+        parsed_command = command % {
+            "device": settings.DEVICE,
+            "cellphone": payload.get("cellphone"),
+            "message": payload.get("message"),
+        }
+        response = os.system(parsed_command.encode('utf-8'))
+        return response
