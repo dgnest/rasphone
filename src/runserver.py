@@ -21,7 +21,7 @@ class Application(tornado.web.Application):
 
 
 def main():
-    print("Starting server at http://127.0.0.1:%s/") % options.port
+    print("Starting server at http://0.0.0.0:%s/") % options.port
     tornado.options.parse_command_line()
     app = Application()
     app.listen(options.port)

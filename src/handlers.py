@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
+import subprocess
 
 import tornado.escape
 import tornado.web
@@ -55,11 +55,19 @@ class SMSHandler(BaseHandler):
         """
             Run command in order to send SMS to Asterisk's queue.
         """
-        command = "asterisk -x 'dongle sms dongle0 %(cellphone)s %(message)s'"
+        command = """
+            asterisk -x 'dongle sms %(device)s %(cellphone)s %(message)s'
+        """
         parsed_command = command % {
             "device": settings.DEVICE,
             "cellphone": payload.get("cellphone"),
             "message": payload.get("message"),
         }
-        response = os.system(parsed_command.encode('utf-8'))
-        return response
+        output, error = subprocess.Popen(
+            parsed_command.encode('utf-8'),
+            universal_newlines=True,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        ).communicate()
+        return output or error
