@@ -27,10 +27,10 @@ class BaseHandler(tornado.web.RequestHandler):
             response["status"] = "in queue"
             print payload
             self.perform_service(payload=response)
-            self.write(tornado.escape.json_encode(response))
+            self.write(response)
         else:
             self.set_status(400, reason="Bad request")
-            self.write(tornado.escape.json_encode(form.errors))
+            self.write(form.errors)
 
 
 class CallHandler(BaseHandler):
