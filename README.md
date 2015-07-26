@@ -8,7 +8,7 @@ We need to make a post request to this url.
 http://localhost:8000/call/
 ```
 
-with the following information:
+With the following data inside its body:
 
 ```json
 {
@@ -27,7 +27,7 @@ We need to make a post request to this url.
 http://localhost:8000/sms/
 ```
 
-with the following information:
+With the following data inside its body:
 
 ```json
 {
