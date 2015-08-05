@@ -1,9 +1,8 @@
 from __future__ import absolute_import
 
-from datetime import timedelta
-
 from celery import Celery
-from celery.schedules import crontab
+from conf import settings
+from datetime import timedelta
 
 
 app = Celery('rasphone',
@@ -18,18 +17,9 @@ app.conf.update(
     CELERYBEAT_SCHEDULE={
         'update-public-ip-every-hour': {
             'task': 'update-public-ip',
-            'schedule': crontab(
-                hour=0,
-                minute=15,
-            ),
+            'schedule': timedelta(minutes=settings.UPDATE_IP_TIME),
         },
     },
-    # CELERYBEAT_SCHEDULE={
-    #     'update-public-ip-every-hour': {
-    #         'task': 'update-public-ip',
-    #         'schedule': timedelta(seconds=5),
-    #     },
-    # },
 )
 
 if __name__ == '__main__':
