@@ -45,6 +45,16 @@ class CallHandler(BaseHandler):
         """
             Do stuff here.
         """
+        # /var/spool/asterisk/outgoing
+        # tele1.call
+        # Channel:  dongle/dongle0/984287311
+        # Application: Playback
+        # Data: mensaje1
+
+        # /var/lib/asterisk/sounds/
+        # Convert wav to gsm
+        # sox originalfile.wav -r 8000 -c1 newfile.gsm
+
         return "Make a Call"
 
 
