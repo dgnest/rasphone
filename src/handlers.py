@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 import subprocess
 
 import tornado.escape
@@ -19,9 +20,16 @@ class BaseHandler(tornado.web.RequestHandler):
         """
         pass
 
+    def unicodize(self, message):
+        if re.match(r'\\u[0-9a-f]{4}', message):
+            return message.decode('unicode-escape')
+        return message.decode('utf-8')
+
     def post(self):
         try:
-            payload = tornado.escape.json_decode(self.request.body)
+            payload = tornado.escape.json_decode(
+                self.unicodize(self.request.body)
+            )
         except:
             payload = {}
             for key, value in self.request.arguments.iteritems():
@@ -45,16 +53,6 @@ class CallHandler(BaseHandler):
         """
             Do stuff here.
         """
-        # /var/spool/asterisk/outgoing
-        # tele1.call
-        # Channel:  dongle/dongle0/984287311
-        # Application: Playback
-        # Data: mensaje1
-
-        # /var/lib/asterisk/sounds/
-        # Convert wav to gsm
-        # sox originalfile.wav -r 8000 -c1 newfile.gsm
-
         return "Make a Call"
 
 

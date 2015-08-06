@@ -12,6 +12,7 @@ With the following data inside its body:
 
 ```json
 {
+    "id": 441,
     "message_id": 1,
     "cellphone": 984287312
 }
@@ -31,6 +32,7 @@ With the following data inside its body:
 
 ```json
 {
+    "id": 666,
     "message": "This is my first sms!",
     "cellphone": 1234567896
 }
