@@ -6,6 +6,13 @@ from utils import NumericValidator
 
 
 class MessageForm(Form):
+    id = fields.IntegerField(
+        "Scheduled message ID",
+        validators=[
+            validators.required(),
+            NumericValidator.numeric(),
+        ],
+    )
     message_id = fields.IntegerField(
         "Message ID",
         validators=[
@@ -49,6 +56,13 @@ class MessageForm(Form):
 
 
 class CallForm(Form):
+    id = fields.IntegerField(
+        "Scheduled message ID",
+        validators=[
+            validators.required(),
+            NumericValidator.numeric(),
+        ],
+    )
     message_id = fields.IntegerField(
         "Message ID",
         validators=[
@@ -67,6 +81,13 @@ class CallForm(Form):
 
 
 class SMSForm(Form):
+    id = fields.IntegerField(
+        "Scheduled message ID",
+        validators=[
+            validators.required(),
+            NumericValidator.numeric(),
+        ],
+    )
     message = fields.StringField(
         "Text Message",
         validators=[
